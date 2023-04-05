@@ -1,0 +1,38 @@
+WhimsyBear_Animation.png
+size:4096,1024
+filter:Linear,Linear
+scale:0.5
+Back Cloak
+bounds:2572,758,650,163
+Cloak
+bounds:1338,568,663,446
+Compass
+bounds:3360,857,242,157
+Finger L
+bounds:194,1,145,174
+rotate:90
+Finger R
+bounds:1,5,141,192
+rotate:90
+Full Body
+bounds:686,478,536,651
+rotate:90
+Fur
+bounds:1,147,655,259
+Hand L
+bounds:2910,465,292,321
+rotate:90
+Hand R
+bounds:2572,532,337,225
+Head
+bounds:2002,563,569,451
+Hoodie
+bounds:1,407,684,607
+Periapt
+bounds:1338,488,76,79
+Staff
+bounds:2572,922,92,787
+rotate:90
+Tie
+bounds:3603,911,103,227
+rotate:90
