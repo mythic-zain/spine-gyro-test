@@ -73,7 +73,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
             const newHAxis = currHAxis - initialOrientationData.hAxis
 
             let xPos = newHAxis * axisModifier
-            if (pixiApp && xPos >= 0) xPos += pixiApp.screen.width
+            if (pixiApp) xPos += pixiApp.screen.width
 
             const position = { x: xPos, y: 0 }
             moveSpine(position)
