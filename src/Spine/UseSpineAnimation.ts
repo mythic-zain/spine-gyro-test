@@ -41,7 +41,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const newX = position.x - pixiApp!.screen.width / 2;
         const currentX = bone!.x;
         bone!.x = newX < -maxX || newX > maxX ? currentX : newX;
-        // bone!.y = -position.y + app.screen.height;
+        bone!.y = -position.y + app.screen.height;
         // console.log('pos', position, targetBone.x, targetBone.y)
     };
 
@@ -72,10 +72,10 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
             const newVAxis = currVAxis - initialOrientationData.vAxis
             const newHAxis = currHAxis - initialOrientationData.hAxis
 
-            let xPos = newHAxis * axisModifier
-            // if (pixiApp) xPos += pixiApp.screen.width
+            const xPos = newHAxis * axisModifier
+            const yPos = newVAxis * axisModifier
 
-            const position = { x: xPos, y: 0 }
+            const position = { x: xPos, y: yPos }
             moveSpine(position)
 
             console.log('initial', initialOrientationData)
