@@ -9,10 +9,10 @@ function App() {
 
   	return (
     	<>
-    		{/* <WhimsyBearMoving /> */}
+    		<WhimsyBearMoving />
 			{/* <WhimsyBearStory /> */}
-			<GyroscopeSensor />
-			<GyroMotion />
+			{/* <GyroscopeSensor /> */}
+			{/* <GyroMotion /> */}
     	</>
   	);
 }
