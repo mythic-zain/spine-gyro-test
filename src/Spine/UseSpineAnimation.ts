@@ -41,8 +41,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const newX = position.x - pixiApp!.screen.width / 2;
         const currentX = bone!.x;
         bone!.x = newX < -maxX || newX > maxX ? currentX : newX;
-        bone!.y = -position.y + app.screen.height;
-        // console.log('pos', position, targetBone.x, targetBone.y)
+        bone!.y = -position.y + pixiApp!.screen.height;
     };
 
     const resizeContainer = () => {
