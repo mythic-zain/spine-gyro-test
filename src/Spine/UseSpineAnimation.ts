@@ -168,14 +168,14 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
     useEffect(() => {
         if (!bearSpine) return;
 
-        const maxX = 958;
+        const maxX = 800;
 
         const newX = -gyroPosition.x + pixiApp!.screen.width / 2;
         const newY = -gyroPosition.y + pixiApp!.screen.height;
         const currentX = bone!.x;
         const currentY = bone!.y;
         bone!.x = newX < -maxX || newX > maxX ? currentX : newX;
-        bone!.y = newY < -350 || newY > 850 ? currentY : newY;
+        bone!.y = newY < -300 || newY > 850 ? currentY : newY;
         console.log('bone', bone!.x, bone!.y)
 
     }, [bearSpine, gyroPosition])
