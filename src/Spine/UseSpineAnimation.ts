@@ -93,8 +93,8 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const beta = e.rotationRate?.beta || 0;
 
         setGyroPosition(prevPosition => ({
-            x: prevPosition.x - beta / 5,
-            y: prevPosition.y + alpha / 5,
+            x: prevPosition.x - beta / 2,
+            y: prevPosition.y + alpha / 2,
         }));
 
         // moveSpineByGyro()
@@ -175,7 +175,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const currentX = bone!.x;
         const currentY = bone!.y;
         bone!.x = newX < -maxX || newX > maxX ? currentX : newX;
-        bone!.y = newY < -400 || newY > 800 ? currentY : newY;
+        bone!.y = newY < -350 || newY > 850 ? currentY : newY;
         console.log('bone', bone!.x, bone!.y)
 
     }, [bearSpine, gyroPosition])
