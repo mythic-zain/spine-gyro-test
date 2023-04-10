@@ -93,8 +93,8 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const beta = e.rotationRate?.beta || 0;
 
         setGyroPosition(prevPosition => ({
-            x: prevPosition.x - beta / 10,
-            y: prevPosition.y + alpha / 10,
+            x: prevPosition.x - beta,
+            y: prevPosition.y + alpha,
         }));
 
         // moveSpineByGyro()
@@ -169,7 +169,6 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         if (!bearSpine) return;
 
         const maxX = 958;
-        const maxY = 700;
 
         const newX = -gyroPosition.x + pixiApp!.screen.width / 2;
         const newY = -gyroPosition.y + pixiApp!.screen.height;
