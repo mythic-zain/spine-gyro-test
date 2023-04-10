@@ -13,15 +13,9 @@ interface ICursorPosition {
     y: number,
 }
 
-interface IOrientationCoordinate {
-    vAxis: number,
-    hAxis: number
-}
-
 const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) => {
     const [bearSpine, setBearSpine] = useState<Spine>()
     const scaleModifier = skeletonScale === 1 ? skeletonScale : 0.8;
-    const [initialOrientationData, setInitialOrientationData] = useState<IOrientationCoordinate>();
     const [pixiApp, setPixiApp] = useState<Application>()
     const [bone, setBone] = useState<IBoneWithCoordinate>()
     const [gyroPosition, setGyroPosition] = useState({ x: 0, y: 0 });
@@ -166,19 +160,17 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
       }, [bearSpine]);
 
     useEffect(() => {
-        if (!bearSpine) return;
-
-        const maxX = 800;
-
-        const newX = -gyroPosition.x + pixiApp!.screen.width / 2;
-        const newY = -gyroPosition.y + pixiApp!.screen.height;
-        const currentX = bone!.x;
-        const currentY = bone!.y;
-        bone!.x = newX < -maxX || newX > maxX ? currentX : newX;
-        bone!.y = newY < -300 || newY > 850 ? currentY : newY;
-        console.log('bone', bone!.x, bone!.y)
-
-    }, [bearSpine, gyroPosition])
+        if (pixiApp && bone) {
+            const maxX = 850;
+            
+            const newX = -gyroPosition.x + pixiApp.screen.width / 2;
+            const newY = -gyroPosition.y + pixiApp.screen.height;
+            const currentX = bone.x;
+            const currentY = bone.y;
+            bone.x = newX < -maxX || newX > maxX ? currentX : newX;
+            bone.y = newY < -450 || newY > 850 ? currentY : newY;
+        }
+    }, [pixiApp, bone, gyroPosition]);
 
     return {bearSpine, gyroPosition}
 } 
