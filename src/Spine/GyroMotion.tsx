@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
 const GyroMotion = () => {
-  const [rotationRate, setRotationRate] = useState({ alpha: 0, beta: 0, gamma: 0 });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleMotion = (event: DeviceMotionEvent) => {
-    setRotationRate({
-      alpha: event.rotationRate?.alpha || 0,
-      beta: event.rotationRate?.beta || 0,
-      gamma: event.rotationRate?.gamma || 0,
-    });
+    const alpha = event.rotationRate?.alpha || 0;
+    const beta = event.rotationRate?.beta || 0;
+
+    setPosition(prevPosition => ({
+      x: prevPosition.x - beta / 10,
+      y: prevPosition.y + alpha / 10,
+    }));
   };
 
   useEffect(() => {
@@ -21,19 +23,12 @@ const GyroMotion = () => {
   }, []);
 
   return (
-    <div>
-      <p>Rotation rate:</p>
-      <ul>
-        <li>X-axis: {rotationRate.alpha.toFixed(2)}</li>
-        <li>Y-axis: {rotationRate.beta.toFixed(2)}</li>
-        <li>Z-axis: {rotationRate.gamma.toFixed(2)}</li>
-      </ul>
+    <div style={{ position: 'absolute', top: `${position.y}px`, left: `${position.x}px` }}>
+      <p>Move me using gyroscope sensor!</p>
+      <p>X = {position.x}</p>
+      <p>Y = {position.y}</p>
     </div>
   );
 };
 
 export default GyroMotion;
-
-// 0.25 up to 768
-// 0.5 768 - 2559
-// 1 > 2560

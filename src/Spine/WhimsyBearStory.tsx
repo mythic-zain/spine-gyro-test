@@ -6,7 +6,7 @@ const WhimsyBearStory: React.FC = () => {
     const canvasRef = useRef<HTMLDivElement>(null)
 
     const spineUrl = 'assets/story/1/WhimsyBear_Story.json'
-    const bearSpine = UseSpineAnimation(canvasRef, spineUrl)
+    const {bearSpine} = UseSpineAnimation(canvasRef, spineUrl)
 
     const [sceneIndex, setSceneIndex] = useState<number>(1)
     const [stateIndex, setStateIndex] = useState<number>(1)

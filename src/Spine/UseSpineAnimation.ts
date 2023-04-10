@@ -24,6 +24,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
     const [initialOrientationData, setInitialOrientationData] = useState<IOrientationCoordinate>();
     const [pixiApp, setPixiApp] = useState<Application>()
     const [bone, setBone] = useState<IBoneWithCoordinate>()
+    const [gyroPosition, setGyroPosition] = useState({ x: 0, y: 0 });
 
     let app: Application
     let container: Container
@@ -32,16 +33,11 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
     const moveSpine = (position: ICursorPosition) => {
         console.log('pos', position)
         const maxX = 958;
-        // const newX = position.x - app.screen.width / 2;
-        // const currentX = targetBone.x;
-        // targetBone.x = newX < -maxX || newX > maxX ? currentX : newX;
-        // targetBone.y = -position.y + app.screen.height;
-        // console.log('pos', position, targetBone.x, targetBone.y)
-
-        const newX = position.x - pixiApp!.screen.width / 2;
-        const currentX = bone!.x;
-        bone!.x = newX < -maxX || newX > maxX ? currentX : newX;
-        bone!.y = -position.y + pixiApp!.screen.height;
+        const newX = position.x - app.screen.width / 2;
+        const currentX = targetBone.x;
+        targetBone.x = newX < -maxX || newX > maxX ? currentX : newX;
+        targetBone.y = -position.y + app.screen.height;
+        console.log('pos', position, targetBone.x, targetBone.y)
     };
 
     const resizeContainer = () => {
@@ -58,28 +54,50 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         );
     };
 
-    const handleOrientation = (e: DeviceOrientationEvent) => {
-        if (!initialOrientationData) {
-            setInitialOrientationData({
-                vAxis: e.beta || 0,
-                hAxis: e.gamma || 0
-            })
-        } else {
-            const axisModifier = 15
-            const currVAxis = e.beta || 0
-            const currHAxis = e.gamma || 0
-            const newVAxis = currVAxis - initialOrientationData.vAxis
-            const newHAxis = currHAxis - initialOrientationData.hAxis
+    // const handleOrientation = (e: DeviceOrientationEvent) => {
+    //     if (!initialOrientationData) {
+    //         setInitialOrientationData({
+    //             vAxis: e.beta || 0,
+    //             hAxis: e.gamma || 0
+    //         })
+    //     } else {
+    //         const axisModifier = 15
+    //         const currVAxis = e.beta || 0
+    //         const currHAxis = e.gamma || 0
+    //         const newVAxis = currVAxis - initialOrientationData.vAxis
+    //         const newHAxis = currHAxis - initialOrientationData.hAxis
 
-            const xPos = newHAxis * axisModifier
-            const yPos = newVAxis * axisModifier
+    //         const xPos = newHAxis * axisModifier
+    //         const yPos = newVAxis * axisModifier
 
-            const position = { x: xPos, y: yPos }
-            moveSpine(position)
+    //         const position = { x: xPos, y: yPos }
+    //         moveSpineGyro(position)
 
-            console.log('initial', initialOrientationData)
-            console.log('new', newVAxis, newHAxis)
-        }
+    //         console.log('initial', initialOrientationData)
+    //         console.log('new', newVAxis, newHAxis)
+    //     }
+    // }
+
+    const moveSpineByGyro = () => {
+        const maxX = 958;
+
+        const newX = -gyroPosition.x + pixiApp!.screen.width / 2;
+        const currentX = bone!.x;
+        bone!.x = newX < -maxX || newX > maxX ? currentX : newX;
+        bone!.y = -gyroPosition.y + pixiApp!.screen.height;
+        console.log('bone', bone!.x, bone!.y)
+    }
+
+    const handleMotion = (e: DeviceMotionEvent) => {
+        const alpha = e.rotationRate?.alpha || 0;
+        const beta = e.rotationRate?.beta || 0;
+
+        setGyroPosition(prevPosition => ({
+            x: prevPosition.x - beta / 10,
+            y: prevPosition.y + alpha / 10,
+        }));
+
+        // moveSpineByGyro()
     }
 
     const onAssetsLoaded = (loader: Loader, res: any) => {
@@ -89,10 +107,10 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
 
         targetBone = spine.skeleton.findBone("AAA_Target") as IBoneWithCoordinate
 
-        // app.stage.on('mousemove', (e) => {    
-        //     const position = { x: e.data.global.x, y: e.data.global.y }
-        //     moveSpine(position)
-        // })
+        app.stage.on('mousemove', (e) => {    
+            const position = { x: e.data.global.x, y: e.data.global.y }
+            moveSpine(position)
+        })
 
         app.stage.on('touchmove', (e) => {
             const position = { x: e.data.global.x, y: e.data.global.y }
@@ -139,17 +157,31 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
     useEffect(() => {
         if (!bearSpine) return;
 
-        if (window.DeviceOrientationEvent) {
-          window.addEventListener("deviceorientation", handleOrientation);
-          return () => {
-            window.removeEventListener("deviceorientation", handleOrientation);
-          };
+        if (window.DeviceMotionEvent) {
+          window.addEventListener('devicemotion', handleMotion, true);
+          return () => window.removeEventListener('devicemotion', handleMotion);
         } else {
-          console.log("Device orientation not supported.");
+          console.warn('DeviceMotionEvent is not supported');
         }
-    }, [bearSpine, initialOrientationData])
+      }, [bearSpine]);
 
-    return bearSpine
+    useEffect(() => {
+        if (!bearSpine) return;
+
+        const maxX = 958;
+        const maxY = 700;
+
+        const newX = -gyroPosition.x + pixiApp!.screen.width / 2;
+        const newY = -gyroPosition.y + pixiApp!.screen.height;
+        const currentX = bone!.x;
+        const currentY = bone!.y;
+        bone!.x = newX < -maxX || newX > maxX ? currentX : newX;
+        bone!.y = newY < -400 || newY > 800 ? currentY : newY;
+        console.log('bone', bone!.x, bone!.y)
+
+    }, [bearSpine, gyroPosition])
+
+    return {bearSpine, gyroPosition}
 } 
 
 export default UseSpineAnimation
