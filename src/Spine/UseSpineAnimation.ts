@@ -130,6 +130,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
 
         app = new Application({ resizeTo: canvasRef.current, backgroundAlpha: 0 });
         app.stage.interactive = true
+        app.renderer.view.style.touchAction = 'auto';
 
         const url = isMobile.any ? spineUrl.replace('1', '0.25') : spineUrl
         app.loader
@@ -163,12 +164,12 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         if (pixiApp && bone) {
             const maxX = 850;
             
-            const newX = -gyroPosition.x + pixiApp.screen.width / 2;
-            const newY = -gyroPosition.y + pixiApp.screen.height;
+            const newX = gyroPosition.x - pixiApp.screen.width / 2;
+            const newY = gyroPosition.y - pixiApp.screen.height;
             const currentX = bone.x;
             const currentY = bone.y;
             bone.x = newX < -maxX || newX > maxX ? currentX : newX;
-            bone.y = newY < -450 || newY > 850 ? currentY : newY;
+            bone.y = newY < -400 || newY > 850 ? currentY : newY;
         }
     }, [pixiApp, bone, gyroPosition]);
 
