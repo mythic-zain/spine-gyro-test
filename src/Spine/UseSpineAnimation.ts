@@ -86,9 +86,11 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const alpha = e.rotationRate?.alpha || 0;
         const beta = e.rotationRate?.beta || 0;
 
+        // if (gyroPosition)
+
         setGyroPosition(prevPosition => ({
-            x: prevPosition.x - beta / 2,
-            y: prevPosition.y + alpha / 2,
+            x: prevPosition.x - beta / 5,
+            y: prevPosition.y + alpha / 5,
         }));
 
         // moveSpineByGyro()
@@ -173,7 +175,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         }
     }, [pixiApp, bone, gyroPosition]);
 
-    return {bearSpine, gyroPosition}
+    return {bearSpine, gyroPosition, bone}
 } 
 
 export default UseSpineAnimation

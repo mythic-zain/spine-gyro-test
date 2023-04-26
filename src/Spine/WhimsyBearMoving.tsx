@@ -6,7 +6,7 @@ const WhimsyBearMoving: React.FC = () => {
     const canvasRef = useRef<HTMLDivElement>(null);
 
     const spineUrl = 'assets/hero/1/WhimsyBear_Animation.json'
-    const {bearSpine, gyroPosition}  = UseSpineAnimation(canvasRef, spineUrl, 0.5)
+    const {bearSpine, gyroPosition, bone}  = UseSpineAnimation(canvasRef, spineUrl, 0.5)
 
     useEffect(() => {
         if (bearSpine) {
@@ -20,6 +20,9 @@ const WhimsyBearMoving: React.FC = () => {
             <div style={{height: 'inherit', width: 'inherit'}} ref={canvasRef}></div>
             <p>X: {gyroPosition.x}</p>
             <p>Y: {gyroPosition.y}</p>
+            <br/>
+            <p>Bone X: {bone?.x}</p>
+            <p>Bone Y: {bone?.y}</p>
         </div>
     );
 };
