@@ -173,7 +173,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
             console.log('currentXY', currentY)
             console.log('newXY', newY)
             bone.x = newX < -maxX || newX > maxX ? currentX : newX;
-            bone.y = newY < -400 || newY > 850 ? currentY : newY;
+            bone.y = newY < -400 || newY > 950 ? currentY : newY;
         }
     }, [pixiApp, bone, gyroPosition, initialBoneY]);
 
