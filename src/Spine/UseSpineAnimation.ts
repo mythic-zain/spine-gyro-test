@@ -19,6 +19,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
     const [pixiApp, setPixiApp] = useState<Application>()
     const [bone, setBone] = useState<IBoneWithCoordinate>()
     const [gyroPosition, setGyroPosition] = useState({ x: 0, y: 0 });
+    const [initialBoneY, setInitialBoneY] = useState<number>(0)
 
     let app: Application
     let container: Container
@@ -86,14 +87,10 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const alpha = e.rotationRate?.alpha || 0;
         const beta = e.rotationRate?.beta || 0;
 
-        console.log('alpha', alpha, 'beta', beta)
-
         setGyroPosition(prevPosition => ({
             x: prevPosition.x - beta / 5,
             y: prevPosition.y + alpha / 5,
         }));
-
-        // moveSpineByGyro()
     }
 
     const onAssetsLoaded = (loader: Loader, res: any) => {
@@ -123,6 +120,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         };
 
         setPixiApp(app)
+        setInitialBoneY(targetBone.y)
         setBone(targetBone)
         setBearSpine(spine)
     }
@@ -165,18 +163,19 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
     useEffect(() => {
         if (pixiApp && bone) {
             const maxX = 850;
+            console.log('init', initialBoneY)
             
             console.log('gyro', gyroPosition)
             const currentX = bone.x;
             const currentY = bone.y;
             const newX = gyroPosition.x - pixiApp.screen.width / 2;
-            const newY = currentY + gyroPosition.y;
+            const newY = gyroPosition.y + initialBoneY;
             console.log('currentXY', currentY)
             console.log('newXY', newY)
             bone.x = newX < -maxX || newX > maxX ? currentX : newX;
             bone.y = newY < -400 || newY > 850 ? currentY : newY;
         }
-    }, [pixiApp, bone, gyroPosition]);
+    }, [pixiApp, bone, gyroPosition, initialBoneY]);
 
     return {bearSpine, gyroPosition, bone}
 } 
