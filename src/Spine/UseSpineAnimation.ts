@@ -86,7 +86,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const alpha = e.rotationRate?.alpha || 0;
         const beta = e.rotationRate?.beta || 0;
 
-        // if (gyroPosition)
+        console.log('alpha', alpha, 'beta', beta)
 
         setGyroPosition(prevPosition => ({
             x: prevPosition.x - beta / 5,
@@ -166,6 +166,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         if (pixiApp && bone) {
             const maxX = 850;
             
+            console.log('gyro', gyroPosition)
             const newX = gyroPosition.x - pixiApp.screen.width / 2;
             const newY = gyroPosition.y - pixiApp.screen.height;
             const currentX = bone.x;
