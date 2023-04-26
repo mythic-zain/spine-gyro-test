@@ -88,8 +88,8 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         const beta = e.rotationRate?.beta || 0;
 
         setGyroPosition(prevPosition => ({
-            x: prevPosition.x - beta / 5,
-            y: prevPosition.y + alpha / 5,
+            x: prevPosition.x - beta / 2,
+            y: prevPosition.y + alpha / 2,
         }));
     }
 
