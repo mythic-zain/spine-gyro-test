@@ -89,8 +89,8 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
         console.log('alpha', alpha, 'beta', beta)
 
         setGyroPosition(prevPosition => ({
-            x: prevPosition.x - beta / 5,
-            y: prevPosition.y + alpha / 5,
+            x: prevPosition.x - beta / 4,
+            y: prevPosition.y + alpha / 4,
         }));
 
         // moveSpineByGyro()
