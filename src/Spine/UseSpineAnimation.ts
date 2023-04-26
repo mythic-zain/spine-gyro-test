@@ -170,7 +170,7 @@ const UseSpineAnimation = (canvasRef: any, spineUrl: string, skeletonScale = 1) 
             const currentX = bone.x;
             const currentY = bone.y;
             const newX = gyroPosition.x - pixiApp.screen.width / 2;
-            const newY = currentY + gyroPosition.y - pixiApp.screen.height;
+            const newY = currentY + gyroPosition.y;
             console.log('currentXY', currentY)
             console.log('newXY', newY)
             bone.x = newX < -maxX || newX > maxX ? currentX : newX;
